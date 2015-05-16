@@ -1,0 +1,2 @@
+# memoraize
+Flashcards, but better.
