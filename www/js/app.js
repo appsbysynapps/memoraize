@@ -66,12 +66,11 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
-  
-    .state('app.newDeck', {
+.state('app.newDeck', {
     url: "/newDeck",
     views: {
       'menuContent': {
-        templateUrl: "templates/newDeck.html"
+        templateUrl: "templates/newDeck.html",
         controller: 'NewDeckCtrl'
       }
     }

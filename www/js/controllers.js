@@ -31,6 +31,19 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+    
+    $ionicModal.fromTemplateUrl('templates/newDeck.html', {
+      scope: $scope,
+     animation: 'slide-in-up'
+    }).then(function(modal) {
+    $scope.newDeckModal = modal;
+    });
+    
+    
+    $scope.newDeck = function() {
+        console.log("jdjiw");
+        $scope.newDeckModal.show();
+    };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -42,21 +55,13 @@ angular.module('starter.controllers', [])
     { title: 'Rap', id: 5 },
     { title: 'Cowbell', id: 6 }
   ];
-    $ionicModal.fromTemplateUrl('newDeck.html', function(modal) {
-    $scope.newDeckModal = modal;
-    }, {
-      scope: $scope,
-    animation: 'slide-in-up'
-    });
     
-    $scope.newDeck = function() {
-        $scope.newDeckModal.show();
-    };
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('NewDeckCtrl', function($scope) {
-    
+.controller('NewDeckCtrl', function($scope, $ionicModal) {
+
+
 });
