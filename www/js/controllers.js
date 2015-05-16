@@ -33,7 +33,7 @@ angular.module('starter.controllers', ["firebase"])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
+.controller('PlaylistsCtrl', function($scope, $firebaseObject) {
     var ref = new Firebase("https://memoraize.firebaseio.com/");
   $scope.decks = [
     { title: 'Reggae', id: 1 },
