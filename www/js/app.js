@@ -65,6 +65,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'PlaylistCtrl'
       }
     }
+  })
+  
+    .state('app.newDeck', {
+    url: "/newDeck",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/newDeck.html"
+        controller: 'NewDeckCtrl'
+      }
+    }
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/decks');

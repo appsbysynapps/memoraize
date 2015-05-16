@@ -42,7 +42,21 @@ angular.module('starter.controllers', [])
     { title: 'Rap', id: 5 },
     { title: 'Cowbell', id: 6 }
   ];
+    $ionicModal.fromTemplateUrl('newDeck.html', function(modal) {
+    $scope.newDeckModal = modal;
+    }, {
+      scope: $scope,
+    animation: 'slide-in-up'
+    });
+    
+    $scope.newDeck = function() {
+        $scope.newDeckModal.show();
+    };
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
+})
+
+.controller('NewDeckCtrl', function($scope) {
+    
 });
