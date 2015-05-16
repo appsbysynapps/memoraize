@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ["firebase"])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -34,6 +34,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistsCtrl', function($scope) {
+    var ref = new Firebase("https://memoraize.firebaseio.com/");
   $scope.decks = [
     { title: 'Reggae', id: 1 },
     { title: 'Chill', id: 2 },
