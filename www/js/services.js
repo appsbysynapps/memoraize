@@ -190,7 +190,6 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     return {
         "getTextFromPhoto": function(uri) {
             var key = 'd3f3928e856ac306b405408d10d08685';
-            var id = '';
             
             
             $cordovaFileTransfer.upload('http://api.newocr.com/v1/upload?key='+key, uri, {
@@ -198,25 +197,23 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
           //framework: 'Ionic' // <<<<< This is sent
         }
       }).then(function(result){
-                alert(result);
-                var almost = JSON.stringify(result).split("\"file_id\":\"")[1];
-                id = almost.substring(0, almost.indexOf('\"'));
-                alert(id);
-                $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
+                var id = JSON.parse(result['response']).data.file_id;
+                
+                $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id='+id+'&page=1&lang=eng&psm=3').
                 success(function(data, status, headers, config) {
-                    alert(data.text);
-                    return data.text;
+                    alert('SUCCESS!!');
+                    alert(JSON.stringify(data));
+                    alert(JSON.stringify(data.data.text));
+                    return data.data.text;
                 }).
                 error(function(data, status, headers, config) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
-                    alert("Oops! Something went wrong.");
-                    return 'Error';
                 });
             }, 
               function(err){
                 alert('err');
-                return err;
+                return 'blah';
             },
               function(progress){
             });

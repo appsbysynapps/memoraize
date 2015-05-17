@@ -61,9 +61,10 @@ angular.module('starter.controllers', ["firebase"])
         }).then(function(imageURI) {
             console.log(imageURI);
             $scope.lastPhoto = imageURI;
-            $scope.cooltext = NewOCRAPI.getTextFromPhoto(imageURI);
+            $scope.cooltext = JSON.stringify(NewOCRAPI.getTextFromPhoto(imageURI));
+            alert($scope.cooltext);
         }, function(err) {
-            console.err(err);
+            alert(JSON.stringify(err));
         });
     };
 
