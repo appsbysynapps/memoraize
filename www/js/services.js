@@ -200,9 +200,10 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
       }).then(function(result){
                 alert(JSON.stringify(result));
                 alert(JSON.stringify(result['response']));
-                alert(JSON.stringify(result['response']['data']));
+                alert(JSON.stringify(result['response']['status']));
+                alert(JSON.stringify(result['response'].data));
                 alert(''+result['response']['data']['pages']);
-                id = JSON.stringify(result['response']['data']['file_id']);
+                id = JSON.stringify(result['response'].data.file_id);
                 alert(id);
                 $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
                 success(function(data, status, headers, config) {
