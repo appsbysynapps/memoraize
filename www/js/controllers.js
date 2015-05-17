@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ["firebase"])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI, Decks) {
         // Form data for the login modal
         $scope.loginData = {};
 
@@ -47,6 +47,15 @@ angular.module('starter.controllers', ["firebase"])
         $scope.closeNewDeck = function() {
             $scope.newDeckModal.hide();
         };
+        
+        $scope.deck = {};
+        
+        $scope.createDeck = function() {
+            Decks.newDeck($scope.deck, function(ref2) {
+                var cards = [Decks.generateCard($scope.deck.term, $scope.deck.sentence)];
+                Decks.addCards(ref2,cards);
+            });
+        }
 
         $scope.cooltext = '';
 

@@ -4,7 +4,7 @@
             <div class="flashcard" ng-init="isHidden=true" ng-class="{'hidden':isHidden}" ng-click="isHidden=!isHidden">
                 <div class="card">
                     <div class="item item-text-wrap">
-                        I am <span class="keyword">{{card.back}}</span>!
+                        {{card.left}}<span class="keyword">{{card.term}}</span>{{card.right}}
                     </div>
                 </div>
             </div>

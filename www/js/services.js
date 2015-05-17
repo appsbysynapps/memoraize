@@ -53,18 +53,32 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     
     factory.newDeck = function(deck,callback) {
         decks.$add({
-            name: $scope.deck.name,
+            name: deck.name,
             cards: {}
         }).then(callback);
     };
     
-    factory.addCard = function(ref2, card, callback) { //ref2 = /decks/:deckid
+    factory.addCards = function(ref2, newCards, callback) { //ref2 = /decks/:deckid
         var cards = $firebaseArray(ref2.child("cards"));
-        $scope.cards.$add({
-            front: card.front,
-            back: card.back
-        });
+        console.log(cards);
+        angular.forEach(newCards, function(card) {
+            cards.$add({
+                left: card.left,
+                term: card.term,
+                right: card.right
+            }).then(callback);
+        })
     }
+    
+    factory.generateCard = function(term, sentence) {
+        var i = sentence.indexOf(term)
+        card = {}
+        card.left = sentence.substring(0,i);
+        card.term = term;
+        card.right = sentence.substring(i+term.length);
+        return card;
+    }
+    
     
     factory.getDeck = function(deckID) {
         angular.forEach(decks, function(deck) {
