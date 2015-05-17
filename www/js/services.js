@@ -192,12 +192,14 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
             var key = 'd3f3928e856ac306b405408d10d08685';
             var id = '';
             
+            
             $cordovaFileTransfer.upload('http://api.newocr.com/v1/upload?key='+key, uri, {
         params: {
           //framework: 'Ionic' // <<<<< This is sent
         }
       }).then(function(result){
                 alert('yah');
+                alert(result);
                 return result.data.file_id;
             }, 
               function(err){
@@ -208,7 +210,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
               function(progress){
             });
             
-            $http.post('http://api.newocr.com/v1/upload?key='+key, {
+            /*$http.post('http://api.newocr.com/v1/upload?key='+key, {
                 file: uri,
             }).
             success(function(data, status, headers, config) {
@@ -230,7 +232,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                 // or server returns response with an error status.
                 alert("Oops! Something went wrong.");
                 return 'Error';
-            });
+            });*/
         }
     }
 })
