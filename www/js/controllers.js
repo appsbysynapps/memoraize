@@ -47,7 +47,9 @@ angular.module('starter.controllers', ["firebase"])
     $scope.closeNewDeck = function() {
         $scope.newDeckModal.hide();
     };
-
+    
+    $scope.cooltext = 'Placeholder.';
+    
     $scope.getPhoto = function() {
         console.log('Getting camera');
         Camera.getPicture({
