@@ -198,41 +198,24 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
           //framework: 'Ionic' // <<<<< This is sent
         }
       }).then(function(result){
-                alert('yah');
-                alert(JSON.stringify(result));
-                return result.data.file_id;
+                var id = result.response.data.file_id;
+                $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
+                success(function(data, status, headers, config) {
+                    return data.text;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    alert("Oops! Something went wrong.");
+                    return 'Error';
+                });
             }, 
               function(err){
-                alert('ba');
-                alert(err);
                 return err;
             },
               function(progress){
             });
             
-            /*$http.post('http://api.newocr.com/v1/upload?key='+key, {
-                file: uri,
-            }).
-            success(function(data, status, headers, config) {
-                id =  data.file_id;
-            }).
-            error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                alert("Oops! Something went wrong w/ upload.");
-                return 'Error';
-            });
-            
-            $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
-            success(function(data, status, headers, config) {
-                return data.text;
-            }).
-            error(function(data, status, headers, config) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                alert("Oops! Something went wrong.");
-                return 'Error';
-            });*/
         }
     }
 })
