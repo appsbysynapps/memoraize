@@ -43,6 +43,24 @@ angular.module('starter.controllers', ["firebase"])
     $scope.newDeck = function() {
         $scope.newDeckModal.show();
     };
+    
+    $scope.closeNewDeck = function() {
+        $scope.newDeckModal.hide();
+    };
+    
+    $scope.getPhoto = function() {
+        Camera.getPicture({
+            quality: 75,
+            targetWidth: 320,
+            targetHeight: 320,
+            saveToPhotoAlbum: false
+        }).then(function(imageURI) {
+            console.log(imageURI);
+            $scope.lastPhoto = imageURI;
+        }, function(err) {
+            console.err(err);
+        });
+    };
 })
 
 .controller('PlaylistsCtrl', function($scope, $firebaseObject) {
@@ -71,17 +89,6 @@ angular.module('starter.controllers', ["firebase"])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {})
 
-.controller('NewDeckCtrl', function($scope) {
-        $scope.getPhoto = function() {
-            navigator.camera.getPicture(function(imageURI) {
-
-                // imageURI is the URL of the image that we can use for
-                // an <img> element or backgroundImage.
-
-            }, function(err) {
-
-                // Ruh-roh, something bad happened
-
-            }, cameraOptions);
-        };
+.controller('NewDeckCtrl', function($scope, Camera) {
+    
 });
