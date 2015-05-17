@@ -62,9 +62,7 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
 
     $scope.cooltext = '';
 
-    $scope.getPhoto = TakePhoto.getPicture(function(x) {
-        $scope.cooltext = x;
-    });
+    $scope.getPhoto = TakePhoto;
     $scope.getExistingPhoto = ChoosePhoto;
 })
 

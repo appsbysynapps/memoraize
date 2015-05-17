@@ -46,22 +46,22 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 })
 
 .factory('TakePhoto', function(NewOCRAPI, Camera) {
-    return {
-        getPicture: function(func) {
-            console.log('Getting camera');
-            Camera.getPicture({
-                quality: 75,
-                //targetWidth: 320,
-                //targetHeight: 320,
-                //encodingType: Camera.EncodingType.JPEG,
-                saveToPhotoAlbum: false
-            }).then(function(imageURI) {
-                func('Processing...');
-                return NewOCRAPI.getTextFromPhoto(imageURI, func);
-            }, function(err) {
-                alert(JSON.stringify(err));
+    return function() {
+        console.log('Getting camera');
+        Camera.getPicture({
+            quality: 75,
+            //targetWidth: 320,
+            //targetHeight: 320,
+            //encodingType: Camera.EncodingType.JPEG,
+            saveToPhotoAlbum: false
+        }).then(function(imageURI) {
+            
+            NewOCRAPI.getTextFromPhoto(imageURI, function(x) {
+                $scope.cooltext = x;
             });
-        }
+        }, function(err) {
+            alert(JSON.stringify(err));
+        });
     }
 })
 
