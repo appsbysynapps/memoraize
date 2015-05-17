@@ -53,7 +53,7 @@ angular.module('starter.controllers', ["firebase"])
     $scope.getPhoto = function() {
         console.log('Getting camera');
         Camera.getPicture({
-            quality: 100,
+            quality: 75,
             //targetWidth: 320,
             //targetHeight: 320,
             //encodingType: Camera.EncodingType.JPEG,
