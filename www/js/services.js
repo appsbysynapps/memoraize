@@ -46,126 +46,42 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 })
 
 .factory('Decks', function($firebase) {
-    // Might use a resource here that returns a JSON array
-    var ref = new Firebase("https://devour.firebaseio.com/decks");
-    var sync = $firebase(ref);
-    // download the data into a local object
-    var syncObject = sync.$asObject();
-    //syncObject.$bindTo($scope, "quizzes");
-
-    return {
-        all: function() {
-            return sync.$asArray();
-        },
-        getName: function(deckID) {
-            var ref2 = new Firebase("https://memoraize.firebaseio.com/decks/"+deckId+"/name");
-            var name = ""
-            ref2.once("value", function(data) {
-                name = data.val();
-            });
-            return name
-        },
-        getCards: function(deckId) {
-            var ref2 = new Firebase("https://memoraize.firebaseio.com/decks/"+deckId+"/cards");
-            return $firebase(ref2).$asArray();
-        },
-        addCard: function(card, deckId) {
-            var ref2 = new Firebase("https://memoraize.firebaseio.com/decks/"+deckId+"/cards");
-            $firebase(ref2).$set(object, true);
-        },
-
+    
+    var ref = new Firebase("https://memoraize.firebaseio.com/decks");
+    var decks = $firebaseArray(ref);
+    var factory = {};
+    
+    factory.newDeck = function(deck,callback) {
+        decks.$add({
+            name: $scope.deck.name,
+            cards: {}
+        }).then(callback);
+    };
+    
+    factory.addCard: function(ref2, card, callback) { //ref2 = /decks/:deckid
+        var cards = $firebaseArray(ref2.child("cards"));
+        $scope.cards.$add({
+            front: card.front,
+            back: card.back
+        });
     }
-})
-
-.factory('Foods', function($firebase, $filter) {
-    // Might use a resource here that returns a JSON array
-    var ref = new Firebase("https://devour.firebaseio.com/foods");
-    var sync = $firebase(ref);
-    // download the data into a local object
-    var syncObject = sync.$asObject();
-    //syncObject.$bindTo($scope, "quizzes");
-
-    return {
-        all: function() {
-            return sync.$asArray();
-        },
-        getRating: function(foodId) {
-            var ref2 = ref.child(foodId+"/total_rating");
-            var str = 0;
-            ref2.once("value", function(data) {
-                str = data.val();
-            });
-
-            return str;
-        },
-        getReviews: function(foodId) {
-            var ref2 = ref.child(foodId+"/reviews");
-            var x = $firebase(ref2).$asArray();
-            return x;
-        },
-        getNumReviews: function(foodId) {
-            var ref2 = ref.child(foodId+"/num_reviews");
-            var str = 0;
-            ref2.once("value", function(data) {
-                str = data.val();
-            });
-
-            return str;
-        },
-        getName: function(foodId) {
-            var ref2 = ref.child(foodId+"/name");
-            var str = ""
-            ref2.once("value", function(data) {
-                str = data.val();
-            });
-
-            return str;
-        },
-        search: function(query) {
-            return $filter('filter')(sync.$asArray(),function(food) {
-                return !query || !food.name || (food.name.toLowerCase()).indexOf(query.toLowerCase())>-1;
-            });
-        },
-
-        add: function(object) {
-            return sync.$push(object);
-        },
-
-        updateTotal: function(id,total_rating,value) {
-            ref.child(id).update({total_rating:value});
-        },
-        updateStars: function(id,stars,value) {
-            console.log("stars"+value);
-            ref.child(id).update({stars:value});
-        },
-        pushReview: function(id,value) {
-            ref.child(id).child("reviews").push(value);
-        },
-
+    
+    factory.getDeck: function(deckID) {
+        angular.forEach(decks, function(deck) {
+            if(deck.$id==deckID) {
+                return deck;
+            }
+        });
     }
-})
-
-.factory('Restaurants', function($firebase) {
-    // Might use a resource here that returns a JSON array
-    var ref = new Firebase("https://devour.firebaseio.com/restaurants");
-    var sync = $firebase(ref);
-    // download the data into a local object
-    var syncObject = sync.$asObject();
-    //syncObject.$bindTo($scope, "quizzes");
-
-    return {
-        all: function() {
-            return sync.$asArray();
-        },
-        getDishes: function(restaurantId) {
-            var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+restaurantId+"/dishes");
-            return $firebase(ref2).$asArray();
-        },
-        addDish: function(object, restaurantId) {
-            var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+restaurantId+"/dishes");
-            $firebase(ref2).$set(object, true);
-        },
+    
+    factory.getCards: function(deckID) {
+        return $firebaseArray(new Firebase("https://memoraize.firebaseio.com/decks/"+deckID+"/cards"));
     }
+    
+    factory.saveDeck = function(deck,callback) {
+        decks.$save(deck).then(callback);
+    }
+    
 })
 
 .factory('Camera', ['$q', function($q) {
@@ -188,8 +104,8 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 
 .factory("NewOCRAPI", function($http, $cordovaFileTransfer) {
     return {
-        "getTextFromPhoto": function(uri) {
-            var key = 'd3f3928e856ac306b405408d10d08685';
+        "getTextFromPhoto": function(uri, func) {
+            var key = '675172a6bccc01464ff15a5f93ab8a27';
             
             
             $cordovaFileTransfer.upload('http://api.newocr.com/v1/upload?key='+key, uri, {
@@ -198,22 +114,18 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         }
       }).then(function(result){
                 var id = JSON.parse(result['response']).data.file_id;
-                
-                $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id='+id+'&page=1&lang=eng&psm=3').
+                func('Processing...Photo successfully uploaded...'+id);
+                $http.get('http://api.newocr.com/v1/ocr?key=675172a6bccc01464ff15a5f93ab8a27&file_id='+id+'&page=1&lang=eng&psm=3').
                 success(function(data, status, headers, config) {
-                    alert('SUCCESS!!');
-                    alert(JSON.stringify(data));
-                    alert(JSON.stringify(data.data.text));
-                    return data.data.text;
+                    func('Processing...Photo successfully uploaded...now processing');
+                    func(data.data.text);
                 }).
                 error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+                    func(data);
                 });
             }, 
               function(err){
-                alert('err');
-                return 'blah';
+                func(err);
             },
               function(progress){
             });
