@@ -185,6 +185,38 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
     }
 }])
 
+.factory("NewOCRAPI", function($http) {
+    return {
+        "getTextFromPhoto": function(uri) {
+            var key = 'd3f3928e856ac306b405408d10d08685';
+            var id = '';
+            $http.post('http://api.newocr.com/v1/upload?key='+key, {
+                file: uri,
+            }).
+            success(function(data, status, headers, config) {
+                id =  data.file_id;
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                alert "Oops! Something went wrong.";
+                return '';
+            });
+            
+            $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
+            success(function(data, status, headers, config) {
+                return data.text;
+            }).
+            error(function(data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                alert "Oops! Something went wrong.";
+                return 'Error';
+            });
+        }
+    }
+})
+
 .factory("TextRazorAPI", function($http) {
     return {
         "processText": function(textForProcessing) {
