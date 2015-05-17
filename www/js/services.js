@@ -200,7 +200,7 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-                alert "Oops! Something went wrong.";
+                alert("Oops! Something went wrong.");
                 return 'Error';
             });
             
@@ -211,7 +211,7 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-                alert "Oops! Something went wrong.";
+                alert("Oops! Something went wrong.");
                 return 'Error';
             });
         }
