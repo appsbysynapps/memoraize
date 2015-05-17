@@ -1,8 +1,8 @@
 <ion-view view-title="Decks">
     <ion-content>
         <ion-list>
-            <ion-item ng-repeat="playlist in decks" href="#/app/decks/{{playlist.id}}">
-                {{playlist.title}}
+            <ion-item ng-repeat="deck in decks" href="#/app/decks/{{deck.$id}}">
+                {{deck.$id}}
             </ion-item>
         </ion-list>
     </ion-content>
