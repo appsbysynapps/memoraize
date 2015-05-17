@@ -54,6 +54,9 @@ angular.module('starter.controllers', ["firebase"])
             Decks.newDeck($scope.deck, function(ref2) {
                 var cards = [Decks.generateCard($scope.deck.term, $scope.deck.sentence)];
                 Decks.addCards(ref2,cards);
+                $scope.deck.term = "";
+                $scope.deck.term = "";
+                $scope.deck.sentence = "";
             });
         }
 

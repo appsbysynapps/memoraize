@@ -1,5 +1,5 @@
 <ion-modal-view view-title="NEW DECK">
-    <ion-header-bar>
+    <ion-header-bar class="bar-positive">
         <div class="buttons">
             <button class="button button-icon button-clear ion-close" ng-click="closeNewDeck()"></button>
         </div>
@@ -8,21 +8,24 @@
     <ion-content>
         <form novalidate class="simple-form" ng-submit="createDeck()">
             <div class="list">
-                <label class="item item-input">
+            </div>
+            
+            <div class="list">
+                <label class="item item-input item-stable">
                     <span class="input-label">Deck Name</span>
-                    <input type="text" ng-model="deck.name">
+                    <input type="text" ng-model="deck.name" class="input-positive">
                 </label>
             </div>
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Term</span>
-                    <input type="text" ng-model="deck.term">
+                    <input type="text" ng-model="deck.term" class="input-positive">
                 </label>
             </div>
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Sentence</span>
-                    <input type="text" ng-model="deck.sentence">
+                    <input type="text" ng-model="deck.sentence" class="input-positive">
                 </label>
             </div>
             <div class="submitButtonContainer">
