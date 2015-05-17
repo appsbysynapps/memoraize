@@ -45,6 +45,30 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
   }];
 })
 
+.factory('Decks', function($firebase) {
+  // Might use a resource here that returns a JSON array
+  var ref = new Firebase("https://devour.firebaseio.com/decks");
+  var sync = $firebase(ref);
+  // download the data into a local object
+  var syncObject = sync.$asObject();
+  //syncObject.$bindTo($scope, "quizzes");
+
+  return {
+    all: function() {
+      return sync.$asArray();
+    },
+    getCards: function(deckId) {
+      var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+deckId+"/cards");
+      return $firebase(ref2).$asArray();
+    },
+    addCard: function(card, deckId) {
+      var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+deckId+"/cards");
+      $firebase(ref2).$set(object, true);
+    },
+    
+  }
+})
+
 .factory('Foods', function($firebase, $filter) {
   // Might use a resource here that returns a JSON array
   var ref = new Firebase("https://devour.firebaseio.com/foods");
