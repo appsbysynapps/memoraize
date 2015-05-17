@@ -3,11 +3,11 @@
 }
 
 .flashcard .card .keyword{
-    color: black;
-    border-bottom: 1px solid black;
+    color: #007AFF;
+    border: 2px solid white;
 }
 
 .flashcard.hidden .card .keyword{
     color: white;
-    border-bottom: 1px solid black;
+    border: 2px solid #007AFF;
 }

@@ -1,28 +1,31 @@
 <ion-modal-view view-title="NEW DECK">
-    <ion-header-bar>
+    <ion-header-bar class="bar-positive">
         <div class="buttons">
             <button class="button button-icon button-clear ion-close" ng-click="closeNewDeck()"></button>
         </div>
         <h1 class="title">New Deck</h1>
     </ion-header-bar>
     <ion-content>
-        <form novalidate class="simple-form" ng-submit="saveDeck()">
+        <form novalidate class="simple-form" ng-submit="createDeck()">
             <div class="list">
-                <label class="item item-input">
+            </div>
+            
+            <div class="list">
+                <label class="item item-input item-stable">
                     <span class="input-label">Deck Name</span>
-                    <input type="text" ng-model="deck.name">
+                    <input type="text" ng-model="deck.name" class="input-positive">
                 </label>
             </div>
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Term</span>
-                    <input type="text" ng-model="deck.term">
+                    <input type="text" ng-model="deck.term" class="input-positive">
                 </label>
             </div>
             <div class="list">
                 <label class="item item-input">
                     <span class="input-label">Sentence</span>
-                    <input type="text" ng-model="deck.sentence">
+                    <input type="text" ng-model="deck.sentence" class="input-positive">
                 </label>
             </div>
             <div class="submitButtonContainer">
@@ -32,7 +35,7 @@
                 <button class="button button-block button-positive" ng-click="getExistingPhoto()">
                     Select Photo
                 </button>
-                <input class="button button-block button-balanced" type="submit"></input>
+                <input class="button button-block button-balanced" type="submit">
             </div>
         </form>
         <p>{{cooltext}}</p>

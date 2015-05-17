@@ -45,127 +45,57 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     }];
 })
 
-.factory('Decks', function($firebase) {
-    // Might use a resource here that returns a JSON array
-    var ref = new Firebase("https://devour.firebaseio.com/decks");
-    var sync = $firebase(ref);
-    // download the data into a local object
-    var syncObject = sync.$asObject();
-    //syncObject.$bindTo($scope, "quizzes");
-
-    return {
-        all: function() {
-            return sync.$asArray();
-        },
-        getName: function(deckID) {
-            var ref2 = new Firebase("https://memoraize.firebaseio.com/decks/"+deckId+"/name");
-            var name = ""
-            ref2.once("value", function(data) {
-                name = data.val();
-            });
-            return name
-        },
-        getCards: function(deckId) {
-            var ref2 = new Firebase("https://memoraize.firebaseio.com/decks/"+deckId+"/cards");
-            return $firebase(ref2).$asArray();
-        },
-        addCard: function(card, deckId) {
-            var ref2 = new Firebase("https://memoraize.firebaseio.com/decks/"+deckId+"/cards");
-            $firebase(ref2).$set(object, true);
-        },
-
+.factory('Decks', function($firebase, $firebaseArray) {
+    
+    var ref = new Firebase("https://memoraize.firebaseio.com/decks");
+    var decks = $firebaseArray(ref);
+    var factory = {};
+    
+    factory.newDeck = function(deck,callback) {
+        decks.$add({
+            name: deck.name,
+            cards: {}
+        }).then(callback);
+    };
+    
+    factory.addCards = function(ref2, newCards, callback) { //ref2 = /decks/:deckid
+        var cards = $firebaseArray(ref2.child("cards"));
+        angular.forEach(newCards, function(card) {
+            cards.$add({
+                left: card.left,
+                term: card.term,
+                right: card.right
+            }).then(callback);
+        })
     }
-})
-
-.factory('Foods', function($firebase, $filter) {
-    // Might use a resource here that returns a JSON array
-    var ref = new Firebase("https://devour.firebaseio.com/foods");
-    var sync = $firebase(ref);
-    // download the data into a local object
-    var syncObject = sync.$asObject();
-    //syncObject.$bindTo($scope, "quizzes");
-
-    return {
-        all: function() {
-            return sync.$asArray();
-        },
-        getRating: function(foodId) {
-            var ref2 = ref.child(foodId+"/total_rating");
-            var str = 0;
-            ref2.once("value", function(data) {
-                str = data.val();
-            });
-
-            return str;
-        },
-        getReviews: function(foodId) {
-            var ref2 = ref.child(foodId+"/reviews");
-            var x = $firebase(ref2).$asArray();
-            return x;
-        },
-        getNumReviews: function(foodId) {
-            var ref2 = ref.child(foodId+"/num_reviews");
-            var str = 0;
-            ref2.once("value", function(data) {
-                str = data.val();
-            });
-
-            return str;
-        },
-        getName: function(foodId) {
-            var ref2 = ref.child(foodId+"/name");
-            var str = ""
-            ref2.once("value", function(data) {
-                str = data.val();
-            });
-
-            return str;
-        },
-        search: function(query) {
-            return $filter('filter')(sync.$asArray(),function(food) {
-                return !query || !food.name || (food.name.toLowerCase()).indexOf(query.toLowerCase())>-1;
-            });
-        },
-
-        add: function(object) {
-            return sync.$push(object);
-        },
-
-        updateTotal: function(id,total_rating,value) {
-            ref.child(id).update({total_rating:value});
-        },
-        updateStars: function(id,stars,value) {
-            console.log("stars"+value);
-            ref.child(id).update({stars:value});
-        },
-        pushReview: function(id,value) {
-            ref.child(id).child("reviews").push(value);
-        },
-
+    
+    factory.generateCard = function(term, sentence) {
+        var i = sentence.indexOf(term)
+        card = {}
+        card.left = sentence.substring(0,i);
+        card.term = term;
+        card.right = sentence.substring(i+term.length);
+        return card;
     }
-})
-
-.factory('Restaurants', function($firebase) {
-    // Might use a resource here that returns a JSON array
-    var ref = new Firebase("https://devour.firebaseio.com/restaurants");
-    var sync = $firebase(ref);
-    // download the data into a local object
-    var syncObject = sync.$asObject();
-    //syncObject.$bindTo($scope, "quizzes");
-
-    return {
-        all: function() {
-            return sync.$asArray();
-        },
-        getDishes: function(restaurantId) {
-            var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+restaurantId+"/dishes");
-            return $firebase(ref2).$asArray();
-        },
-        addDish: function(object, restaurantId) {
-            var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+restaurantId+"/dishes");
-            $firebase(ref2).$set(object, true);
-        },
+    
+    
+    factory.getDeck = function(deckID) {
+        angular.forEach(decks, function(deck) {
+            if(deck.$id==deckID) {
+                return deck;
+            }
+        });
     }
+    
+    factory.getCards = function(deckID) {
+        return $firebaseArray(new Firebase("https://memoraize.firebaseio.com/decks/"+deckID+"/cards"));
+    }
+    
+    factory.saveDeck = function(deck,callback) {
+        decks.$save(deck).then(callback);
+    }
+    factory.decks = decks;
+    return factory;
 })
 
 .factory('Camera', ['$q', function($q) {

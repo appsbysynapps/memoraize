@@ -59,11 +59,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
     .state('app.single', {
-        url: "/decks/:playlistId",
+        url: "/decks/:deckId",
         views: {
             'menuContent': {
-                templateUrl: "templates/playlist.html",
-                controller: 'PlaylistCtrl'
+                templateUrl: "templates/cards.html",
+                controller: 'CardsCtrl'
             }
         }
     })
