@@ -199,7 +199,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         }
       }).then(function(result){
                 alert('yah');
-                alert(result);
+                alert(JSON.stringify(result)));
                 return result.data.file_id;
             }, 
               function(err){
