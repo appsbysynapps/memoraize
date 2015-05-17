@@ -57,6 +57,13 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
     all: function() {
       return sync.$asArray();
     },
+    getName: function(deckID) {
+        var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+deckId+"/name");
+        var name = ""
+      ref2.once("value", function(data) {
+          str = data.val();
+      });
+    },
     getCards: function(deckId) {
       var ref2 = new Firebase("https://devour.firebaseio.com/restaurants/"+deckId+"/cards");
       return $firebase(ref2).$asArray();
