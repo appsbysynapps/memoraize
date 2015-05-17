@@ -199,8 +199,10 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         }
       }).then(function(result){
                 var id = result.response.data.file_id;
+                alert(id);
                 $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
                 success(function(data, status, headers, config) {
+                    alert(data.text);
                     return data.text;
                 }).
                 error(function(data, status, headers, config) {
@@ -211,6 +213,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                 });
             }, 
               function(err){
+                alert('err');
                 return err;
             },
               function(progress){
