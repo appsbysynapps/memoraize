@@ -1,3 +1,46 @@
-.submitButtonContainer{
+.submitButtonContainer {
     padding: 10px;
+}
+.flip {
+    -webkit-perspective: 800;
+    width: 80%;
+    height: 200px;
+    position: relative;
+    margin: 50px auto;
+}
+.flip .twoSides.flipped {
+    -webkit-transform: rotatex(-180deg);
+}
+.flip .twoSides {
+    width: 100%;
+    height: 100%;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: 0.5s;
+}
+
+.flip .twoSides .card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-backface-visibility: hidden;
+    z-index: 2;
+    font-family: Georgia;
+    font-size: 3em;
+    text-align: center;
+    line-height: 200px;
+}
+
+.flip .twoSides .front {
+    position: absolute;
+    z-index: 1;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+.flip .twoSides .back {
+    -webkit-transform: rotatex(-180deg);
+    background: blue;
+    background: white;
+    color: black;
+    cursor: pointer;
 }
