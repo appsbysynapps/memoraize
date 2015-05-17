@@ -128,7 +128,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         }
       }).then(function(result){
                 var id = JSON.parse(result['response']).data.file_id;
-                func('Processing...Photo successfully uploaded...'+id);
+                func('Processing...Photo successfully uploaded...');
                 $http.get('http://api.newocr.com/v1/ocr?key=675172a6bccc01464ff15a5f93ab8a27&file_id='+id+'&page=1&lang=eng&psm=3').
                 success(function(data, status, headers, config) {
                     func('Processing...Photo successfully uploaded...now processing');
