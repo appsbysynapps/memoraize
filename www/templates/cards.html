@@ -3,8 +3,10 @@
         <div class="flip" ng-repeat="card in cards">
             <div class="flashcard" ng-init="isHidden=true" ng-class="{'hidden':isHidden}" ng-click="isHidden=!isHidden">
                 <div class="card">
-                    <div class="item item-text-wrap">
-                        {{card.left}}<span class="keyword">{{card.term}}</span>{{card.right}}
+                    <div class="cardBackground">
+                        <div class="item item-text-wrap item-energized">
+                            {{card.left}}<span class="keyword">{{card.term}}</span>{{card.right}}
+                        </div>
                     </div>
                 </div>
             </div>
