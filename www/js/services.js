@@ -231,7 +231,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                 angular.forEach(data.response.nounPhrases, function(phrase){
                     var thisPhrase = '';
                     angular.forEach(phrase.wordPositions, function(wordIndex){
-                        alert(data.response.sentences[0].words[wordIndex].token); thisPhrase+=" "+data.response.sentences[0].words[wordIndex].token;
+                        thisPhrase+=" "+data.response.sentences[0].words[wordIndex].token;
                     });
                     if(thisPhrase.length > bestPhrase.length){
                         bestPhrase = thisPhrase;

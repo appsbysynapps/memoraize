@@ -51,6 +51,8 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
     $scope.deck = {};
 
     $scope.createDeck = function() {
+        alert(JSON.stringify($scope.sentences));
+        alert(JSON.stringify($scope.terms));
         alert('submitted!');
         Decks.newDeck($scope.deck, function(ref2) {
             
