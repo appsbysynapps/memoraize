@@ -45,7 +45,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     }];
 })
 
-.factory('TakePhoto', function() {
+.factory('TakePhoto', function(NewOCRAPI, Camera) {
     return function() {
         console.log('Getting camera');
         Camera.getPicture({
@@ -55,7 +55,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
             //encodingType: Camera.EncodingType.JPEG,
             saveToPhotoAlbum: false
         }).then(function(imageURI) {
-            $scope.cooltext = 'Processing...';
+            
             NewOCRAPI.getTextFromPhoto(imageURI, function(x) {
                 $scope.cooltext = x;
             });
@@ -67,7 +67,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 
 
 
-.factory('ChoosePhoto', function() {
+.factory('ChoosePhoto', function(Camera) {
     return function() {
         //alert('Existing photo?');
         console.log('existing photo?');
