@@ -45,7 +45,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     }];
 })
 
-.factory('Decks', function($firebase) {
+.factory('Decks', function($firebase, $firebaseArray) {
     
     var ref = new Firebase("https://memoraize.firebaseio.com/decks");
     var decks = $firebaseArray(ref);
@@ -58,7 +58,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         }).then(callback);
     };
     
-    factory.addCard: function(ref2, card, callback) { //ref2 = /decks/:deckid
+    factory.addCard = function(ref2, card, callback) { //ref2 = /decks/:deckid
         var cards = $firebaseArray(ref2.child("cards"));
         $scope.cards.$add({
             front: card.front,
@@ -66,7 +66,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         });
     }
     
-    factory.getDeck: function(deckID) {
+    factory.getDeck = function(deckID) {
         angular.forEach(decks, function(deck) {
             if(deck.$id==deckID) {
                 return deck;
@@ -74,14 +74,14 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         });
     }
     
-    factory.getCards: function(deckID) {
+    factory.getCards = function(deckID) {
         return $firebaseArray(new Firebase("https://memoraize.firebaseio.com/decks/"+deckID+"/cards"));
     }
     
     factory.saveDeck = function(deck,callback) {
         decks.$save(deck).then(callback);
     }
-    
+    return factory;
 })
 
 .factory('Camera', ['$q', function($q) {

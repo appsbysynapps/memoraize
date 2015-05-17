@@ -103,10 +103,11 @@ angular.module('starter.controllers', ["firebase"])
     };
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-
+.controller('CardsCtrl', function($scope, $stateParams, Decks) {
+    $scope.cards = Decks.getCards($stateParams.deckId);
+    console.log($scope.cards);
 })
 
 .controller('NewDeckCtrl', function($scope, Camera) {
-
+    
 });

@@ -1,10 +1,10 @@
-<ion-view view-title="Playlist">
+<ion-view view-title="Cards">
     <ion-content>
-        <div class="flip">
+        <div class="flip" ng-repeat="card in cards">
             <div class="flashcard" ng-init="isHidden=true" ng-class="{'hidden':isHidden}" ng-click="isHidden=!isHidden">
                 <div class="card">
                     <div class="item item-text-wrap">
-                        I am <span class="keyword">happy</span>!
+                        I am <span class="keyword">{{card.back}}</span>!
                     </div>
                 </div>
             </div>
