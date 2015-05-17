@@ -48,13 +48,14 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
         $scope.newDeckModal.hide();
     };
 
+    $scope.decks = Decks.decks;
     $scope.deck = {};
 
     $scope.createDeck = function() {
         Decks.newDeck($scope.deck, function(ref2) {
             var cards = [Decks.generateCard($scope.deck.term, $scope.deck.sentence)];
             Decks.addCards(ref2, cards);
-            $scope.deck.term = "";
+            $scope.deck.name = "";
             $scope.deck.term = "";
             $scope.deck.sentence = "";
         });
@@ -62,86 +63,37 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
 
     $scope.cooltext = '';
 
-    $scope.getPhoto = function() {
-        console.log('Getting camera');
-        Camera.getPicture({
-            quality: 75,
-            //targetWidth: 320,
-            //targetHeight: 320,
-            //encodingType: Camera.EncodingType.JPEG,
-            saveToPhotoAlbum: false
-        }).then(function(imageURI) {
-            $scope.cooltext = 'Processing...';
-            NewOCRAPI.getTextFromPhoto(imageURI, function(x) {
-                $scope.cooltext = x;
-            });
-        }, function(err) {
-            alert(JSON.stringify(err));
-        });
-    };
-
-    $scope.getExistingPhoto = function() {
-        //alert('Existing photo?');
-        console.log('existing photo?');
-        var options = {
-            maximumImagesCount: 10,
-            width: 800,
-            height: 800,
-            quality: 80
-        };
-
-        $cordovaImagePicker.getPictures(options)
-            .then(function(results) {
-                for (var i = 0; i < results.length; i++) {
-                    console.log('Image URI: ' + results[i]);
-                }
-            }, function(error) {
-                // error getting photos
-            });
-        //            Camera.getPicture({
-        //                quality: 75,
-        //                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-        //                destinationType: Camera.DestinationType.FILE_URI,
-        //                //targetWidth: 320,
-        //                //targetHeight: 320,
-        //                //encodingType: Camera.EncodingType.JPEG,
-        //                saveToPhotoAlbum: false
-        //                
-        //            }).then(function(imageURI) {
-        //                alert('yay?');
-        //                console.log('yay?');
-        //                $scope.cooltext = 'Processing...';
-        //                NewOCRAPI.getTextFromPhoto(imageURI, function(x){
-        //                    $scope.cooltext=x;
-        //                });
-        //            }, function(err) {
-        //                console.log('oh no...');
-        //                alert('oh no...');
-        //                alert(JSON.stringify(err));
-        //            });
-    };
-
-    $scope.decks = Decks.decks;
-
-    $scope.deck = {};
-    $scope.cards = {};
-
-    $scope.saveDeck = function() {
-
-        console.log($scope.deck.name);
-
-        var deck = $scope.deck;
-
-        $scope.decks.$add({
-            name: $scope.deck.name,
-            cards: {}
-        }).then();
-    };
+    $scope.getPhoto = takePhoto();
+    $scope.getExistingPhoto = choosePhoto();
 })
 
-.controller('CardsCtrl', function($scope, $stateParams, Decks) {
+.controller('CardsCtrl', function($scope, $stateParams, Decks, TakePhoto, ChoosePhoto) {
     $scope.cards = Decks.getCards($stateParams.deckId);
     console.log($scope.cards);
+
+    $ionicModal.fromTemplateUrl('templates/addCards.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.addCardsModal = modal;
+    });
+
+    $scope.closeAddCards = function() {
+        $scope.addCardsModal.hide();
+    };
+
+    $scope.deck = Decks.getDeck($stateParams.deckId);
+
+    $scope.moreCards = function() {
+            var cards = [Decks.generateCard($scope.deck.term, $scope.deck.sentence)];
+            Decks.addCards(new Firebase("https://memoraize.firebaseio.com/decks/"+$stateParams.deckId), cards);
+            $scope.deck.term = "";
+            $scope.deck.sentence = "";
+    }
+
+    $scope.getPhoto = TakePhoto;
+    $scope.getExistingPhoto = ChoosePhoto;
+
 })
 
 .controller('NewDeckCtrl', function($scope, Camera) {

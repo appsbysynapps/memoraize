@@ -45,19 +45,85 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     }];
 })
 
+.factory('TakePhoto', function() {
+    return function() {
+        console.log('Getting camera');
+        Camera.getPicture({
+            quality: 75,
+            //targetWidth: 320,
+            //targetHeight: 320,
+            //encodingType: Camera.EncodingType.JPEG,
+            saveToPhotoAlbum: false
+        }).then(function(imageURI) {
+            $scope.cooltext = 'Processing...';
+            NewOCRAPI.getTextFromPhoto(imageURI, function(x) {
+                $scope.cooltext = x;
+            });
+        }, function(err) {
+            alert(JSON.stringify(err));
+        });
+    }
+})
+
+
+
+.factory('TakePhoto', function() {
+    return function() {
+        //alert('Existing photo?');
+        console.log('existing photo?');
+        var options = {
+            maximumImagesCount: 10,
+            width: 800,
+            height: 800,
+            quality: 80
+        };
+
+        $cordovaImagePicker.getPictures(options)
+        .then(function(results) {
+            for (var i = 0; i < results.length; i++) {
+                console.log('Image URI: ' + results[i]);
+            }
+        }, function(error) {
+            // error getting photos
+        });
+        //            Camera.getPicture({
+        //                quality: 75,
+        //                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+        //                destinationType: Camera.DestinationType.FILE_URI,
+        //                //targetWidth: 320,
+        //                //targetHeight: 320,
+        //                //encodingType: Camera.EncodingType.JPEG,
+        //                saveToPhotoAlbum: false
+        //                
+        //            }).then(function(imageURI) {
+        //                alert('yay?');
+        //                console.log('yay?');
+        //                $scope.cooltext = 'Processing...';
+        //                NewOCRAPI.getTextFromPhoto(imageURI, function(x){
+        //                    $scope.cooltext=x;
+        //                });
+        //            }, function(err) {
+        //                console.log('oh no...');
+        //                alert('oh no...');
+        //                alert(JSON.stringify(err));
+        //            });
+    };
+})
+
+
 .factory('Decks', function($firebase, $firebaseArray) {
-    
+
     var ref = new Firebase("https://memoraize.firebaseio.com/decks");
     var decks = $firebaseArray(ref);
     var factory = {};
-    
+
     factory.newDeck = function(deck,callback) {
         decks.$add({
             name: deck.name,
             cards: {}
         }).then(callback);
     };
-    
+
     factory.addCards = function(ref2, newCards, callback) { //ref2 = /decks/:deckid
         var cards = $firebaseArray(ref2.child("cards"));
         angular.forEach(newCards, function(card) {
@@ -68,7 +134,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
             }).then(callback);
         })
     }
-    
+
     factory.generateCard = function(term, sentence) {
         var i = sentence.indexOf(term)
         card = {}
@@ -77,8 +143,8 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         card.right = sentence.substring(i+term.length);
         return card;
     }
-    
-    
+
+
     factory.getDeck = function(deckID) {
         angular.forEach(decks, function(deck) {
             if(deck.$id==deckID) {
@@ -86,11 +152,11 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
             }
         });
     }
-    
+
     factory.getCards = function(deckID) {
         return $firebaseArray(new Firebase("https://memoraize.firebaseio.com/decks/"+deckID+"/cards"));
     }
-    
+
     factory.saveDeck = function(deck,callback) {
         decks.$save(deck).then(callback);
     }
@@ -120,13 +186,13 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     return {
         "getTextFromPhoto": function(uri, func) {
             var key = '675172a6bccc01464ff15a5f93ab8a27';
-            
-            
+
+
             $cordovaFileTransfer.upload('http://api.newocr.com/v1/upload?key='+key, uri, {
-        params: {
-          //framework: 'Ionic' // <<<<< This is sent
-        }
-      }).then(function(result){
+                params: {
+                    //framework: 'Ionic' // <<<<< This is sent
+                }
+            }).then(function(result){
                 var id = JSON.parse(result['response']).data.file_id;
                 func('Processing...Photo successfully uploaded...'+id);
                 $http.get('http://api.newocr.com/v1/ocr?key=675172a6bccc01464ff15a5f93ab8a27&file_id='+id+'&page=1&lang=eng&psm=3').
@@ -138,12 +204,12 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                     func(JSON.stringify(data));
                 });
             }, 
-              function(err){
+                    function(err){
                 func(JSON.stringify(err));
             },
-              function(progress){
+                    function(progress){
             });
-            
+
         }
     }
 })
