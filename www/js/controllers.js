@@ -63,9 +63,9 @@ angular.module('starter.controllers', ["firebase"])
     };
 })
 
-.controller('PlaylistsCtrl', function($scope, $firebaseObject) {
-    var ref = new Firebase("https://memoraize.firebaseio.com/");
-    $scope.decks = [{
+.controller('PlaylistsCtrl', function($scope, $firebaseArray) {
+    var ref = new Firebase("https://memoraize.firebaseio.com/decks");
+    /*$scope.decks = [{
         title: 'Reggae',
         id: 1
     }, {
@@ -83,8 +83,11 @@ angular.module('starter.controllers', ["firebase"])
     }, {
         title: 'Cowbell',
         id: 6
-    }];
-
+    }];*/
+    
+    $scope.decks = $firebaseArray(ref);
+    console.log($scope.decks);
+    
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {})
