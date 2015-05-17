@@ -198,10 +198,8 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
           //framework: 'Ionic' // <<<<< This is sent
         }
       }).then(function(result){
-                alert(result);
-                var almost = JSON.stringify(result).split("\"file_id\":\"")[1];
-                id = almost.substring(0, almost.indexOf('\"'));
-                alert(id);
+                alert(JSON.stringify(result));
+                alert(JSON.stringify(result.response.data.file_id));
                 $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
                 success(function(data, status, headers, config) {
                     alert(data.text);
