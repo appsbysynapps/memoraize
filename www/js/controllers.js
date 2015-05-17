@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ["firebase", "ngCordova"])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker, $cordovaCamera) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker, Camera) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -63,7 +63,7 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
     $scope.cooltext = '';
 
     $scope.getPhoto = function() {
-        /*console.log('Getting camera');
+        console.log('Getting camera');
         Camera.getPicture({
             quality: 75,
             //targetWidth: 320,
@@ -77,28 +77,7 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
             });
         }, function(err) {
             alert(JSON.stringify(err));
-        });*/
-        
-        alert('wat');
-        
-        var options = {
-          destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.CAMERA,
-        };
-        
-        alert(JSON.stringify(options));
-        $cordovaCamera.getPicture(options).then(function(imageURI) {
-            alert('wat');
-          $scope.cooltext = 'Processing...';
-            NewOCRAPI.getTextFromPhoto(imageURI, function(x) {
-                $scope.cooltext = x;
-            });
-        }, function(err) {
-            alert(JSON.stringify(err));
         });
-
-
-        $cordovaCamera.cleanup(); // only for FILE_URI
     };
 
     $scope.getExistingPhoto = function() {
