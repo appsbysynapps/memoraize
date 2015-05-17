@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ["firebase"])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -49,6 +49,7 @@ angular.module('starter.controllers', ["firebase"])
     };
 
     $scope.getPhoto = function() {
+        console.log('Getting camera');
         Camera.getPicture({
             quality: 100,
             //targetWidth: 320,
@@ -62,11 +63,29 @@ angular.module('starter.controllers', ["firebase"])
             console.err(err);
         });
     };
+    
+    var ref = new Firebase("https://memoraize.firebaseio.com/decks");
+    $scope.decks = $firebaseArray(ref);
+    
+    $scope.deckName = "";
+    
+    $scope.saveDeck = function() {
+        console.log($scope.deckName);
+        
+        $scope.decks.$add({
+            id: $scope.deckName
+        });
+        console.log($scope.decks);
+        $scope.deckName = "";
+        $scope.deckTerm = "";
+        $scope.deckSentence = "";
+    }
+    
 })
 
-.controller('PlaylistsCtrl', function($scope, $firebaseObject) {
-    var ref = new Firebase("https://memoraize.firebaseio.com/");
-    $scope.decks = [{
+.controller('PlaylistsCtrl', function($scope) {
+    
+    /*$scope.decks = [{
         title: 'Reggae',
         id: 1
     }, {
@@ -84,8 +103,11 @@ angular.module('starter.controllers', ["firebase"])
     }, {
         title: 'Cowbell',
         id: 6
-    }];
-
+    }];*/
+    
+    
+    //console.log($scope.decks);
+    
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {})
