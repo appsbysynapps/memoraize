@@ -53,7 +53,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         views: {
             'menuContent': {
                 templateUrl: "templates/decks.html",
-                controller: 'PlaylistsCtrl'
+                controller: 'AppCtrl'
             }
         }
     })
@@ -67,15 +67,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             }
         }
     })
-    .state('app.newDeck', {
-        url: "/newDeck",
-        views: {
-            'menuContent': {
-                templateUrl: "templates/newDeck.html",
-                controller: 'NewDeckCtrl'
-            }
-        }
-    });
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/decks');
 });

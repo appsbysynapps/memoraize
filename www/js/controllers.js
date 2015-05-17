@@ -66,20 +66,28 @@ angular.module('starter.controllers', ["firebase"])
     var ref = new Firebase("https://memoraize.firebaseio.com/decks");
     $scope.decks = $firebaseArray(ref);
     
-    $scope.deckName = "";
+    $scope.deck = {};
+    $scope.cards = {};
     
     $scope.saveDeck = function() {
-        console.log($scope.deckName);
+        
+        console.log($scope.deck.name);
+        
+        var deck= $scope.deck;
         
         $scope.decks.$add({
-            id: $scope.deckName
+            name: $scope.deck.name,
+            cards: {}
+        }).then(function(ref2){
+            $scope.cards = $firebaseArray(ref2.child("cards"));
+            console.log($scope.deck.term);
+            console.log($scope.deck.sentence);
+            $scope.cards.$add({
+                front: $scope.deck.term,
+                back: $scope.deck.sentence
+            });
         });
-        console.log($scope.decks);
-        $scope.deckName = "";
-        $scope.deckTerm = "";
-        $scope.deckSentence = "";
     }
-    
 })
 
 .controller('PlaylistsCtrl', function($scope) {
