@@ -43,11 +43,11 @@ angular.module('starter.controllers', ["firebase"])
     $scope.newDeck = function() {
         $scope.newDeckModal.show();
     };
-    
+
     $scope.closeNewDeck = function() {
         $scope.newDeckModal.hide();
     };
-    
+
     $scope.getPhoto = function() {
         Camera.getPicture({
             quality: 75,
@@ -90,5 +90,5 @@ angular.module('starter.controllers', ["firebase"])
 .controller('PlaylistCtrl', function($scope, $stateParams) {})
 
 .controller('NewDeckCtrl', function($scope, Camera) {
-    
+
 });
