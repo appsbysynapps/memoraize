@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ["firebase", "ngCordova"])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker, TakePhoto, ChoosePhoto) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -63,8 +63,8 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
 
     $scope.cooltext = '';
 
-    $scope.getPhoto = takePhoto();
-    $scope.getExistingPhoto = choosePhoto();
+    $scope.getPhoto = TakePhoto;
+    $scope.getExistingPhoto = ChoosePhoto;
 })
 
 .controller('CardsCtrl', function($scope, $stateParams, Decks, TakePhoto, ChoosePhoto) {
