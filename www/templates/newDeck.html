@@ -36,6 +36,6 @@
             </div>
         </form>
         <p>{{cooltext}}</p>
-        <img src="{{lastPhoto}}">
+        <ion-spinner ng-show="cooltext.indexOf('Processing...')===0" icon="lines"></ion-spinner>
     </ion-content>
 </ion-modal-view>
