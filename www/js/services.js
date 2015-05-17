@@ -46,7 +46,10 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 })
 
 .factory('TakePhoto', function(NewOCRAPI, Camera) {
-    return function() {
+    
+    var factory = {};
+    
+    factory.getPhoto = function(func, func2) {
         console.log('Getting camera');
         Camera.getPicture({
             quality: 75,
@@ -55,14 +58,14 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
             //encodingType: Camera.EncodingType.JPEG,
             saveToPhotoAlbum: false
         }).then(function(imageURI) {
-            
-            NewOCRAPI.getTextFromPhoto(imageURI, function(x) {
-                $scope.cooltext = x;
-            });
+            func('Processing...');
+            NewOCRAPI.getTextFromPhoto(imageURI, func, func2);
         }, function(err) {
             alert(JSON.stringify(err));
         });
     }
+    
+    return factory;
 })
 
 
@@ -182,9 +185,9 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     }
 }])
 
-.factory("NewOCRAPI", function($http, $cordovaFileTransfer) {
+.factory("NewOCRAPI", function($http, $cordovaFileTransfer, TextRazorAPI) {
     return {
-        "getTextFromPhoto": function(uri, func) {
+        "getTextFromPhoto": function(uri, func, func2) {
             var key = '675172a6bccc01464ff15a5f93ab8a27';
 
 
@@ -199,6 +202,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                 success(function(data, status, headers, config) {
                     func('Processing...Photo successfully uploaded...now processing');
                     func(data.data.text);
+                    func2(data.data.text);
                 }).
                 error(function(data, status, headers, config) {
                     func(JSON.stringify(data));
@@ -216,14 +220,25 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 
 .factory("TextRazorAPI", function($http) {
     return {
-        "processText": function(textForProcessing) {
+        "bestTerm": function(textForProcessing, func) {
             $http.post('https://api.textrazor.com', {
                 apiKey: 'e283e70a509f0818b7ecbe9957b9def2f71e039105538f6fa807c684',
                 text: textForProcessing,
-                extractors: 'topics,phrases,words,dependency-trees'
+                extractors: 'phrases,words'
             }).
             success(function(data, status, headers, config) {
-                return data;
+                bestPhrase = '';
+                angular.forEach(data.response.nounPhrases, function(phrase){
+                    var thisPhrase = '';
+                    angular.forEach(phrase.wordPositions, function(wordIndex){
+                        alert(data.response.sentences[0].words[wordIndex].token); thisPhrase+=" "+data.response.sentences[0].words[wordIndex].token;
+                    });
+                    if(thisPhrase.length > bestPhrase.length){
+                        bestPhrase = thisPhrase;
+                    }
+                });
+                alert('bestPhrase '+bestPhrase);
+                func(bestPhrase);
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs

@@ -1,5 +1,5 @@
 angular.module('starter.controllers', ["firebase", "ngCordova"])
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker, TakePhoto, ChoosePhoto) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker, TakePhoto, ChoosePhoto, TextRazorAPI) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -51,18 +51,41 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
     $scope.deck = {};
 
     $scope.createDeck = function() {
+        alert('submitted!');
         Decks.newDeck($scope.deck, function(ref2) {
-            var cards = [Decks.generateCard($scope.deck.term, $scope.deck.sentence)];
+            
+            var cards = [];
+            
+            alert($scope.sentences.length+'bag');
+            for(var i = 0; i < $scope.terms.length; i++) {
+                cards.push(Decks.generateCard($scope.terms[i], $scope.sentences[i]));
+            }
+        
             Decks.addCards(ref2, cards);
             $scope.deck.name = "";
-            $scope.deck.term = "";
-            $scope.deck.sentence = "";
+            $scope.cooltext = '';
+            $scope.closeNewDeck();
         });
     }
 
     $scope.cooltext = '';
+    
+    $scope.terms = [];
+    $scope.sentences = [];
 
-    $scope.getPhoto = TakePhoto;
+    $scope.getPhoto = function(){
+        TakePhoto.getPhoto(function(x){$scope.cooltext=x;}, function(photoText){
+            $scope.sentences = photoText.split("\n").join("").split(".");
+            
+            angular.forEach($scope.sentences, function(sentence){
+                TextRazorAPI.bestTerm(sentence, function(x){$scope.terms.push(x)});
+            });
+            
+
+        });
+        
+        
+    }
     $scope.getExistingPhoto = ChoosePhoto;
 })
 
