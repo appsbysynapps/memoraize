@@ -1,4 +1,4 @@
-angular.module('starter.services', ['firebase'], function($httpProvider){
+angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProvider){
     /**
    * The workhorse; converts an object to x-www-form-urlencoded serialization.
    * @param {Object} obj
@@ -186,11 +186,25 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
     }
 }])
 
-.factory("NewOCRAPI", function($http) {
+.factory("NewOCRAPI", function($http, $cordovaFileTransfer) {
     return {
         "getTextFromPhoto": function(uri) {
             var key = 'd3f3928e856ac306b405408d10d08685';
             var id = '';
+            
+            $cordovaFileTransfer.upload('http://api.newocr.com/v1/upload?key='+key, uri, {
+        params: {
+          //framework: 'Ionic' // <<<<< This is sent
+        }
+      }).then(function(result){
+                return result.data.file_id;
+            }, 
+              function(err){
+                return err;
+            },
+              function(progress){
+            });
+            
             $http.post('http://api.newocr.com/v1/upload?key='+key, {
                 file: uri,
             }).

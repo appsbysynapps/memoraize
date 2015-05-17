@@ -18,7 +18,8 @@
     "org.apache.cordova.console",
     "org.apache.cordova.device",
     "com.ionic.keyboard",
-    "org.apache.cordova.camera"
+    "org.apache.cordova.camera",
+    "org.apache.cordova.file-transfer"
   ],
   "cordovaPlatforms": [
     "android"
