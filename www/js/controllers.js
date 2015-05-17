@@ -101,43 +101,8 @@ angular.module('starter.controllers', ["firebase"])
         $scope.decks.$add({
             name: $scope.deck.name,
             cards: {}
-        }).then(function(ref2) {
-            $scope.cards = $firebaseArray(ref2.child("cards"));
-            console.log($scope.deck.term);
-            console.log($scope.deck.sentence);
-            $scope.cards.$add({
-                front: $scope.deck.term,
-                back: $scope.deck.sentence
-            });
-        });
+        }).then();
     };
-})
-
-.controller('PlaylistsCtrl', function($scope) {
-
-    /*$scope.decks = [{
-        title: 'Reggae',
-        id: 1
-    }, {
-        title: 'Chill',
-        id: 2
-    }, {
-        title: 'Dubstep',
-        id: 3
-    }, {
-        title: 'Indie',
-        id: 4
-    }, {
-        title: 'Rap',
-        id: 5
-    }, {
-        title: 'Cowbell',
-        id: 6
-    }];*/
-
-
-    //console.log($scope.decks);
-
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
