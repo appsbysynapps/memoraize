@@ -1,15 +1,10 @@
 <ion-view view-title="Playlist">
     <ion-content>
         <div class="flip">
-            <div class="twoSides" ng-class="{'flipped':isFlipped}" ng-click="isFlipped=!isFlipped">
-                <div class="card front">
+            <div class="flashcard" ng-init="isHidden=true" ng-class="{'hidden':isHidden}" ng-click="isHidden=!isHidden">
+                <div class="card">
                     <div class="item item-text-wrap">
-                        Side 1
-                    </div>
-                </div>
-                <div class="card back">
-                    <div class="item item-text-wrap">
-                        Side 2
+                        I am <span class="keyword">happy</span>!
                     </div>
                 </div>
             </div>
