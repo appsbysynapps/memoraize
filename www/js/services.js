@@ -67,7 +67,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 
 
 
-.factory('TakePhoto', function() {
+.factory('ChoosePhoto', function() {
     return function() {
         //alert('Existing photo?');
         console.log('existing photo?');
