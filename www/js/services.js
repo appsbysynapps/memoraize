@@ -201,7 +201,7 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 alert "Oops! Something went wrong.";
-                return '';
+                return 'Error';
             });
             
             $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').

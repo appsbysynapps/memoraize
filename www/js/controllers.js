@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ["firebase"])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -59,6 +59,7 @@ angular.module('starter.controllers', ["firebase"])
         }).then(function(imageURI) {
             console.log(imageURI);
             $scope.lastPhoto = imageURI;
+            $scope.cooltext = NewOCRAPI.getTextFromPhoto(imageURI);
         }, function(err) {
             console.err(err);
         });
