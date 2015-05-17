@@ -108,6 +108,6 @@ angular.module('starter.controllers', ["firebase"], function($httpProvider){
 })
 
 .controller('NewDeckCtrl', function($scope, $ionicModal) {
-
+    
 
 });
