@@ -1,4 +1,4 @@
-angular.module('starter.services', ['firebase'], function($httpProvider){
+angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProvider){
     /**
    * The workhorse; converts an object to x-www-form-urlencoded serialization.
    * @param {Object} obj
@@ -185,6 +185,48 @@ angular.module('starter.services', ['firebase'], function($httpProvider){
         }
     }
 }])
+
+.factory("NewOCRAPI", function($http, $cordovaFileTransfer) {
+    return {
+        "getTextFromPhoto": function(uri) {
+            var key = 'd3f3928e856ac306b405408d10d08685';
+            var id = '';
+            
+            
+            $cordovaFileTransfer.upload('http://api.newocr.com/v1/upload?key='+key, uri, {
+        params: {
+          //framework: 'Ionic' // <<<<< This is sent
+        }
+      }).then(function(result){
+                alert(JSON.stringify(result));
+                alert(JSON.stringify(result['response']));
+                alert(JSON.stringify(result['response']['status']));
+                alert(JSON.stringify(result['response'].data));
+                alert(''+result['response']['data']['pages']);
+                id = JSON.stringify(result['response'].data.file_id);
+                alert(id);
+                $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id'+id+'&page=1&lang=eng&psm=3').
+                success(function(data, status, headers, config) {
+                    alert(data.text);
+                    return data.text;
+                }).
+                error(function(data, status, headers, config) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    alert("Oops! Something went wrong.");
+                    return 'Error';
+                });
+            }, 
+              function(err){
+                alert('err');
+                return err;
+            },
+              function(progress){
+            });
+            
+        }
+    }
+})
 
 .factory("TextRazorAPI", function($http) {
     return {

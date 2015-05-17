@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ["firebase"])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -47,17 +47,21 @@ angular.module('starter.controllers', ["firebase"])
     $scope.closeNewDeck = function() {
         $scope.newDeckModal.hide();
     };
-
+    
+    $scope.cooltext = 'Placeholder.';
+    
     $scope.getPhoto = function() {
         console.log('Getting camera');
         Camera.getPicture({
             quality: 75,
-            targetWidth: 320,
-            targetHeight: 320,
+            //targetWidth: 320,
+            //targetHeight: 320,
+            //encodingType: Camera.EncodingType.JPEG,
             saveToPhotoAlbum: false
         }).then(function(imageURI) {
             console.log(imageURI);
             $scope.lastPhoto = imageURI;
+            $scope.cooltext = NewOCRAPI.getTextFromPhoto(imageURI);
         }, function(err) {
             console.err(err);
         });
