@@ -54,7 +54,7 @@ angular.module('starter.controllers', ["firebase"])
             quality: 100,
             //targetWidth: 320,
             //targetHeight: 320,
-            encodingType: Camera.EncodingType.JPEG,
+            //encodingType: Camera.EncodingType.JPEG,
             saveToPhotoAlbum: false
         }).then(function(imageURI) {
             console.log(imageURI);
