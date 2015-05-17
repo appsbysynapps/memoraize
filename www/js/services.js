@@ -200,7 +200,10 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
       }).then(function(result){
                 alert(JSON.stringify(result));
                 alert(JSON.stringify(result.response));
-                alert(result['response']['status']);
+                var hi = result.response;
+                alert(hi.data);
+                alert(hi.data.file_id);
+                alert(JSON.stringify(hi));
                 alert(result['response'].data);
                 alert(''+result['response']['data']['pages']);
                 id = result['response'].data.file_id;
