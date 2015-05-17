@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ["firebase"])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -49,6 +49,7 @@ angular.module('starter.controllers', ["firebase"])
     };
 
     $scope.getPhoto = function() {
+        console.log('Getting camera');
         Camera.getPicture({
             quality: 75,
             targetWidth: 320,
