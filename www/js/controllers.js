@@ -49,7 +49,7 @@ angular.module('starter.controllers', ["firebase"])
     };
     
     $scope.cooltext = '';
-    
+
     $scope.getPhoto = function() {
         console.log('Getting camera');
         Camera.getPicture({
@@ -67,23 +67,41 @@ angular.module('starter.controllers', ["firebase"])
             alert(JSON.stringify(err));
         });
     };
-    
+
+    $scope.getExistingPhoto = function() {
+        $scope.getPicture = function() {
+            var options = {
+                quality: 75,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                encodingType: Camera.EncodingType.JPEG,
+                popoverOptions: CameraPopoverOptions
+            };
+
+            $cordovaCamera.getPicture(options).then(function(imageData) {
+                $scope.imgURI = imageData;
+            }, function(err) {
+                console.log("err accessing photo library", err)
+            });
+        }
+    }
+
     var ref = new Firebase("https://memoraize.firebaseio.com/decks");
     $scope.decks = $firebaseArray(ref);
-    
+
     $scope.deck = {};
     $scope.cards = {};
-    
+
     $scope.saveDeck = function() {
-        
+
         console.log($scope.deck.name);
-        
-        var deck= $scope.deck;
-        
+
+        var deck = $scope.deck;
+
         $scope.decks.$add({
             name: $scope.deck.name,
             cards: {}
-        }).then(function(ref2){
+        }).then(function(ref2) {
             $scope.cards = $firebaseArray(ref2.child("cards"));
             console.log($scope.deck.term);
             console.log($scope.deck.sentence);
@@ -92,11 +110,11 @@ angular.module('starter.controllers', ["firebase"])
                 back: $scope.deck.sentence
             });
         });
-    }
+    };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
-    
+
     /*$scope.decks = [{
         title: 'Reggae',
         id: 1
@@ -116,13 +134,15 @@ angular.module('starter.controllers', ["firebase"])
         title: 'Cowbell',
         id: 6
     }];*/
-    
-    
+
+
     //console.log($scope.decks);
-    
+
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {})
+.controller('PlaylistCtrl', function($scope, $stateParams) {
+
+})
 
 .controller('NewDeckCtrl', function($scope, Camera) {
 

@@ -1,5 +1,13 @@
 <ion-view view-title="Playlist">
     <ion-content>
-        <h1>Playlist</h1>
+        <div class="flip">
+            <div class="flashcard" ng-init="isHidden=true" ng-class="{'hidden':isHidden}" ng-click="isHidden=!isHidden">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        I am <span class="keyword">happy</span>!
+                    </div>
+                </div>
+            </div>
+        </div>
     </ion-content>
 </ion-view>
