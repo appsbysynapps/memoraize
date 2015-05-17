@@ -60,7 +60,6 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     
     factory.addCards = function(ref2, newCards, callback) { //ref2 = /decks/:deckid
         var cards = $firebaseArray(ref2.child("cards"));
-        console.log(cards);
         angular.forEach(newCards, function(card) {
             cards.$add({
                 left: card.left,
@@ -95,6 +94,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     factory.saveDeck = function(deck,callback) {
         decks.$save(deck).then(callback);
     }
+    factory.decks = decks;
     return factory;
 })
 

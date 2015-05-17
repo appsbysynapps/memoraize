@@ -78,24 +78,32 @@ angular.module('starter.controllers', ["firebase"])
         };
 
         $scope.getExistingPhoto = function() {
+            //alert('Existing photo?');
+            console.log('existing photo?');
             Camera.getPicture({
                 quality: 75,
-                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+                destinationType: Camera.DestinationType.FILE_URI,
                 //targetWidth: 320,
                 //targetHeight: 320,
                 //encodingType: Camera.EncodingType.JPEG,
                 saveToPhotoAlbum: false
+                
             }).then(function(imageURI) {
-                console.log(imageURI);
-//                $scope.lastPhoto = imageURI;
-//                $scope.cooltext = JSON.stringify(NewOCRAPI.getTextFromPhoto(imageURI));
-//                alert($scope.cooltext);
+                alert('yay?');
+                console.log('yay?');
+                $scope.cooltext = 'Processing...';
+                NewOCRAPI.getTextFromPhoto(imageURI, function(x){
+                    $scope.cooltext=x;
+                });
             }, function(err) {
+                console.log('oh no...');
+                alert('oh no...');
                 alert(JSON.stringify(err));
             });
         };
 
-    var ref = new Firebase("https://memoraize.firebaseio.com/decks"); $scope.decks = $firebaseArray(ref);
+    $scope.decks = Decks.decks;
 
     $scope.deck = {}; $scope.cards = {};
 
