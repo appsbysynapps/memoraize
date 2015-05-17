@@ -197,6 +197,7 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
           //framework: 'Ionic' // <<<<< This is sent
         }
       }).then(function(result){
+                alert('yah');
                 return result.data.file_id;
             }, 
               function(err){
