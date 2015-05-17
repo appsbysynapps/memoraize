@@ -66,7 +66,7 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
     $scope.getExistingPhoto = ChoosePhoto;
 })
 
-.controller('CardsCtrl', function($scope, $stateParams, Decks, TakePhoto, ChoosePhoto, $ionicModal) {
+.controller('CardsCtrl', function($scope, $stateParams, Decks, TakePhoto, ChoosePhoto) {
     $scope.cards = Decks.getCards($stateParams.deckId);
     console.log($scope.cards);
 
