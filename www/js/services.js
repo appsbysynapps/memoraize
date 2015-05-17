@@ -205,11 +205,11 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                     func(data.data.text);
                 }).
                 error(function(data, status, headers, config) {
-                    func(data);
+                    func(JSON.stringify(data));
                 });
             }, 
               function(err){
-                func(err);
+                func(JSON.stringify(err));
             },
               function(progress){
             });
