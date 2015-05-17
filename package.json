@@ -19,7 +19,11 @@
     "org.apache.cordova.device",
     "com.ionic.keyboard",
     "org.apache.cordova.camera",
-    "org.apache.cordova.file-transfer"
+    "org.apache.cordova.file-transfer",
+    {
+      "locator": "https://github.com/wymsee/cordova-imagePicker.git",
+      "id": "com.synconset.imagepicker"
+    }
   ],
   "cordovaPlatforms": [
     "android"
