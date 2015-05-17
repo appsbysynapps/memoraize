@@ -200,6 +200,8 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                 return result.data.file_id;
             }, 
               function(err){
+                alert('ba');
+                alert(err);
                 return err;
             },
               function(progress){
