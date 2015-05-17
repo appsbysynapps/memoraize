@@ -188,8 +188,8 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
 
 .factory("NewOCRAPI", function($http, $cordovaFileTransfer) {
     return {
-        "getTextFromPhoto": function(uri) {
-            var key = 'd3f3928e856ac306b405408d10d08685';
+        "getTextFromPhoto": function(uri, func) {
+            var key = '675172a6bccc01464ff15a5f93ab8a27';
             
             
             $cordovaFileTransfer.upload('http://api.newocr.com/v1/upload?key='+key, uri, {
@@ -198,22 +198,18 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
         }
       }).then(function(result){
                 var id = JSON.parse(result['response']).data.file_id;
-                
-                $http.get('http://api.newocr.com/v1/ocr?key='+key+'&file_id='+id+'&page=1&lang=eng&psm=3').
+                func('Processing...Photo successfully uploaded...'+id);
+                $http.get('http://api.newocr.com/v1/ocr?key=675172a6bccc01464ff15a5f93ab8a27&file_id='+id+'&page=1&lang=eng&psm=3').
                 success(function(data, status, headers, config) {
-                    alert('SUCCESS!!');
-                    alert(JSON.stringify(data));
-                    alert(JSON.stringify(data.data.text));
-                    return data.data.text;
+                    func('Processing...Photo successfully uploaded...now processing');
+                    func(data.data.text);
                 }).
                 error(function(data, status, headers, config) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+                    func(data);
                 });
             }, 
               function(err){
-                alert('err');
-                return 'blah';
+                func(err);
             },
               function(progress){
             });

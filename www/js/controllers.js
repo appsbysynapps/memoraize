@@ -48,7 +48,7 @@ angular.module('starter.controllers', ["firebase"])
         $scope.newDeckModal.hide();
     };
     
-    $scope.cooltext = 'Placeholder.';
+    $scope.cooltext = '';
     
     $scope.getPhoto = function() {
         console.log('Getting camera');
@@ -59,10 +59,10 @@ angular.module('starter.controllers', ["firebase"])
             //encodingType: Camera.EncodingType.JPEG,
             saveToPhotoAlbum: false
         }).then(function(imageURI) {
-            console.log(imageURI);
-            $scope.lastPhoto = imageURI;
-            $scope.cooltext = JSON.stringify(NewOCRAPI.getTextFromPhoto(imageURI));
-            alert($scope.cooltext);
+            $scope.cooltext = 'Processing...';
+            NewOCRAPI.getTextFromPhoto(imageURI, function(x){
+                $scope.cooltext=x;
+            });
         }, function(err) {
             alert(JSON.stringify(err));
         });
