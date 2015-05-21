@@ -1,5 +1,5 @@
 angular.module('starter.controllers', ["firebase", "ngCordova"])
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker, TakePhoto, ChoosePhoto, TextRazorAPI) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Camera, $firebaseArray, NewOCRAPI, Decks, $cordovaImagePicker, TakePhoto, ChoosePhoto, TextRazorAPI, NLP) {
     // Form data for the login modal
     $scope.loginData = {};
 
@@ -54,11 +54,25 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
         alert(JSON.stringify($scope.sentences));
         alert(JSON.stringify($scope.terms));
         alert('submitted!');
+        
+        /*var cards = [];
+        
+        for(var i = 0; i<$scope.terms.length; i++){
+            var x = $scope.sentences.indexOf($scope.terms[i]);
+            cards.push(
+                {
+                    left: $scope.sentences[i].substring(0, x),
+                    term: $scope.terms[i],
+                    right: $scope.sentences[i].substring(x+$scope.terms[i].length)
+                }
+            );
+            alert(JSON.stringify(cards[i]));
+        }*/
+        
         Decks.newDeck($scope.deck, function(ref2) {
             
             var cards = [];
             
-            alert($scope.sentences.length+'bag');
             for(var i = 0; i < $scope.terms.length; i++) {
                 cards.push(Decks.generateCard($scope.terms[i], $scope.sentences[i]));
             }
@@ -68,6 +82,15 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
             $scope.cooltext = '';
             $scope.closeNewDeck();
         });
+        
+        /*alert(JSON.stringify(cards));
+        
+        Decks.addDeck($scope.deck, cards, function(ref2){
+            $scope.deck.name = "";
+            $scope.cooltext = '';
+            $scope.closeNewDeck();
+        });*/
+        
     }
 
     $scope.cooltext = '';
@@ -77,12 +100,13 @@ angular.module('starter.controllers', ["firebase", "ngCordova"])
 
     $scope.getPhoto = function(){
         TakePhoto.getPhoto(function(x){$scope.cooltext=x;}, function(photoText){
-            $scope.sentences = photoText.split("\n").join("").split(".");
+            $scope.sentences = photoText.split("-\n").join("").split("\n").join("").split(".");
             
             angular.forEach($scope.sentences, function(sentence){
-                TextRazorAPI.bestTerm(sentence, function(x){$scope.terms.push(x)});
-            });
-            
+                //TextRazorAPI.bestTerm(sentence, function(x){$scope.terms.push(x)});
+                $scope.terms.push(NLP.bestTerm(sentence));
+                
+            });            
 
         });
         

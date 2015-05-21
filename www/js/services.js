@@ -119,11 +119,21 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
     var ref = new Firebase("https://memoraize.firebaseio.com/decks");
     var decks = $firebaseArray(ref);
     var factory = {};
+    
+    factory.addDeck = function(deck, mycards, callback){
+        alert('Eh good');
+        alert(deck);
+        alert(cards);
+        decks.$add({
+            name: deck.name,
+            cards: mycards
+        }).then(callback);
+    }
 
     factory.newDeck = function(deck,callback) {
         decks.$add({
             name: deck.name,
-            cards: {}
+            cards: {}   
         }).then(callback);
     };
 
@@ -237,7 +247,6 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                         bestPhrase = thisPhrase;
                     }
                 });
-                alert('bestPhrase '+bestPhrase);
                 func(bestPhrase);
             }).
             error(function(data, status, headers, config) {
@@ -245,6 +254,35 @@ angular.module('starter.services', ['firebase', 'ngCordova'], function($httpProv
                 // or server returns response with an error status.
                 return "Oops! Something went wrong.";
             });
+        }
+    }
+})
+
+
+.factory("NLP", function() {
+    return {
+        "bestTerm": function(text) {
+            var s = nlp.pos(text).sentences[0];
+            if(s.entities().length>0){
+                var entities = s.entities();
+                var longest = entities.sort(function (a, b) { return b['text'].length - a['text'].length; })[0]['text'];
+                return longest;
+            }
+            else if(s.people().length>0){
+                var people = s.people();
+                var longest = people.sort(function (a, b) { return b['text'].length - a['text'].length; })[0]['text'];
+                return longest;
+            }
+            else if(s.nouns().length>0){
+                var nouns = s.nouns();
+                var longest = nouns.sort(function (a, b) { return b['text'].length - a['text'].length; })[0]['text'];
+                return longest;
+            }
+            else{
+                var words = text.split(" ");
+                var longest = words.sort(function (a, b) { return b.length - a.length; })[0];
+                return longest;
+            }
         }
     }
 });
